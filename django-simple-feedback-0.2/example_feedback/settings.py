@@ -1,11 +1,14 @@
-# Django settings for LitHub project.
-from lithub_config import *
+# Django settings for example_feedback project.
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+LOGIN_REDIRECT_URL = '/'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('John Doe', 'manager@example.com'),
 )
 
 MANAGERS = ADMINS
@@ -13,7 +16,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': LITHUB_ROOT+'database.sqlite3',   # Or path to database file if using sqlite3.
+        'NAME': 'example.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -28,7 +31,7 @@ DATABASES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Detroit'
+TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -57,7 +60,8 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = LITHUB_ROOT + "static/"
+STATIC_ROOT = ''
+
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/static/'
@@ -72,7 +76,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    )
+)
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -83,7 +87,16 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = '6(994t_e+5ektmh+6b&ki0y7_%$-aj6n-lbojmxm3h-551pdvk'
+SECRET_KEY = 'e)i-z61gxg((rg(wni+y8an*ly&2#q637(#=mootjr#kz@5jf='
+
+CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    'django.core.context_processors.static',
+    "django.core.context_processors.request",
+)
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -100,13 +113,13 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'example_feedback.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    LITHUB_ROOT + 'templates/',
+    os.path.join(os.path.dirname(__file__), 'templates')
 )
 
 INSTALLED_APPS = (
@@ -116,26 +129,34 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-     'django.contrib.admin',
+    # Uncomment the next line to enable the admin:
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
-    'bookswap',
-    'registration',
-    'fbconnect',
     'feedback',
 )
-TEMPLATE_CONTEXT_PROCESSORS = (
-"django.contrib.auth.context_processors.auth",
-"django.core.context_processors.debug",
-"django.core.context_processors.i18n",
-"django.core.context_processors.media",
-"django.core.context_processors.static",
-"django.contrib.messages.context_processors.messages",
-"django.core.context_processors.request",
-)
 
-# If your website is not on the root of your website, then uncomment
-# and edit these
-# LOGIN_REDIRECT_URL = '/accounts/profile'
-# LOGIN_URL = MEDIA_URL + '/accounts/login'
-# LOGOUT_URL = MEDIA_URL + '/accounts/logout'
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

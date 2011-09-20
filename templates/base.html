@@ -23,6 +23,12 @@
         <title>{% block title %}{% endblock %} &raquo; Kzoo LitHub</title>
         <link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
         <link href='{{STATIC_URL}}css/style.css' rel='stylesheet' type='text/css'>
+        
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}feedback/css/feedback.css" />
+        <script type="text/javascript" src="{{ STATIC_URL }}feedback/js/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}feedback/js/feedback.js"></script>
+
+         {% load feedback_tags %}
     </head>
     <body>
         <div id="wrapper">
@@ -82,9 +88,14 @@
                 </ul>
                 {% endif %}
                 </div><!-- end messages-->
-                {% block content %}{% endblock %}
+                {% block content %}
+
+                {% endblock %}
                 <div style="clear:both;">&nbsp;</div><!-- Wrapper class needs to be streched down so that the background extend's to the page bottom -->
             </div><!-- end content -->
         </div><!-- end wrapper -->
+        {% load feedback_tags %}
+                {% feedback %}
+
     </body>
 </html>

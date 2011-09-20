@@ -31,6 +31,7 @@ urlpatterns = patterns('',
         {'backend': 'bookswap.kregform.KzooRegistrationBackend',
             'form_class': KzooRegistrationForm},
         name='registration_register'),
+    url(r'^feedback/',include('feedback.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/fb/', include('fbconnect.urls')),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
